@@ -1,20 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {createStackNavigator} from '@react-navigation/stack';
+import MapScreen from "./MapScreen";
+import {NavigationContainer} from '@react-navigation/native';
+import * as SplashScreen from 'expo-splash-screen';
+import {useEffect} from "react";
+
+const Stack = createStackNavigator();
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    useEffect(() => {
+        async function prepare() {
+            await SplashScreen.preventAutoHideAsync();
+        }
+        prepare();
+    }, []);
+    return (
+        <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name="Find Pharmacies near you" component={MapScreen}/>
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
